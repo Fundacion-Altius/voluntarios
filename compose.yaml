@@ -1,0 +1,52 @@
+services:
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    volumes:
+      - ./front:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - back
+    container_name: voluntarios-front
+    command: npm run dev
+
+  back:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    volumes:
+      - ./back:/app
+    
+    ports:
+      - "3001:3001"
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    container_name: voluntarios-back
+    restart: on-failure
+
+  mariadb:
+    image: mariadb:10.6
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysecretpassword
+      - MYSQL_DATABASE=voluntarios
+      - MYSQL_USER=voluntarios_user
+      - MYSQL_PASSWORD=mysecretpassword
+    container_name: voluntarios-db
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pmysecretpassword"]
+      timeout: 20s
+      retries: 10
+
+volumes:
+  mariadb_data:
