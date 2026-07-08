@@ -29,6 +29,14 @@ predeploy-logs/
 node_modules/
 pnpm-lock.yaml
 
+# Playwright MCP artifacts
+.playwright-mcp/
+
+# Generated reports and screenshots
+*.html
+dashboard-charts.png
+Captura desde *.png
+
 # OS generated files
 .DS_Store
 Thumbs.db
