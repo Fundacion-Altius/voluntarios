@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voluntarios — Project Status</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; -webkit-font-smoothing: antialiased; }
+body {
+  background: #12141A;
+  color: #E2E4E8;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  padding: 2rem 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.mono, .change-id, code, pre {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.9em;
+}
+.header {
+  border-bottom: 1px solid #2A2D35;
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.header h1 { font-size: 1.5rem; font-weight: 600; color: #F0F2F5; }
+.header .subtitle { color: #8B8F9A; font-size: 0.85rem; margin-top: 0.25rem; }
+.hero-number {
+  font-size: 3rem;
+  font-weight: 700;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  line-height: 1;
+  color: #64B5F6;
+}
+.hero-label { font-size: 0.8rem; color: #8B8F9A; text-transform: uppercase; letter-spacing: 0.05em; text-align: right; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.stat-card {
+  background: #1A1D24;
+  border: 1px solid #2A2D35;
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+.stat-card .stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  color: #F0F2F5;
+  line-height: 1.2;
+}
+.stat-card .stat-label { font-size: 0.8rem; color: #8B8F9A; margin-top: 0.25rem; }
+.stat-card .stat-breakdown { font-size: 0.8rem; color: #8B8F9A; margin-top: 0.35rem; }
+.stat-card.warning { border-color: #F5A623; }
+.stat-card.warning .stat-value { color: #F5A623; }
+.stat-card.accent { border-color: #64B5F6; }
+.stat-card.accent .stat-value { color: #64B5F6; }
+
+.section { margin-bottom: 2.5rem; }
+.section h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #F0F2F5;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #2A2D35;
+}
+
+.chart-container { background: #1A1D24; border: 1px solid #2A2D35; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; }
+.chart-bars { display: flex; gap: 0; height: 28px; border-radius: 4px; overflow: hidden; margin-top: 0.75rem; }
+.chart-bar { display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; color: #12141A; transition: width 0.2s; min-width: 0; }
+.chart-bar.done { background: #2E7D32; }
+.chart-bar.in-progress { background: #1565C0; }
+.chart-bar.blocked { background: #C62828; }
+.chart-bar.not-started { background: #545761; }
+.chart-legend { display: flex; gap: 1.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+.chart-legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: #B0B4BE; }
+.chart-legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8B8F9A;
+  border-bottom: 1px solid #2A2D35;
+  font-weight: 600;
+}
+tbody td { padding: 0.6rem 0.75rem; border-bottom: 1px solid #22252B; font-size: 0.85rem; vertical-align: middle; }
+tbody tr:hover { background: #1A1D24; }
+.change-id { color: #64B5F6; font-size: 0.82rem; }
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.badge.done { background: #1B3D1E; color: #81C784; }
+.badge.in-progress { background: #0D2B4E; color: #64B5F6; }
+.badge.not-started { background: #2A2D35; color: #B0B4BE; }
+.badge.blocked { background: #3E1214; color: #EF9A9A; }
+.badge.cancelled { background: #3A2E0A; color: #F5A623; }
+
+.progress-bar-bg { width: 100%; max-width: 120px; height: 6px; background: #2A2D35; border-radius: 3px; overflow: hidden; }
+.progress-bar-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
+.progress-bar-fill.green { background: #2E7D32; }
+.progress-bar-fill.blue { background: #1565C0; }
+.progress-bar-fill.yellow { background: #F5A623; }
+.progress-bar-fill.gray { background: #545761; }
+
+.callout {
+  background: #1A1D24;
+  border: 1px solid #2A2D35;
+  border-left: 3px solid #F5A623;
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.75rem;
+}
+.callout.danger { border-left-color: #C62828; }
+.callout.info { border-left-color: #1565C0; }
+.callout-title { font-weight: 600; font-size: 0.9rem; color: #F0F2F5; margin-bottom: 0.3rem; }
+.callout-body { font-size: 0.85rem; color: #B0B4BE; line-height: 1.6; }
+.callout-body code { background: #12141A; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.82rem; }
+
+.dq-note { color: #8B8F9A; font-size: 0.82rem; padding: 0.5rem 0; }
+.dq-note li { margin-bottom: 0.3rem; }
+
+@media (max-width: 600px) {
+  body { padding: 1rem; }
+  .header-row { flex-direction: column; align-items: flex-start; }
+  .hero-number { font-size: 2.5rem; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  thead { display: none; }
+  tbody tr { display: block; padding: 0.75rem 0; border-bottom: 1px solid #2A2D35; }
+  tbody td { display: flex; justify-content: space-between; align-items: center; padding: 0.3rem 0; border: none; }
+  tbody td::before { content: attr(data-label); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em; color: #8B8F9A; font-weight: 600; }
+  .progress-bar-bg { max-width: 80px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-row">
+    <div>
+      <h1>Voluntarios</h1>
+      <div class="subtitle">Project Status Dashboard — 2026-07-05 · Technical Report</div>
+      <div class="subtitle">Data source: <code>openspec/status.json</code> (generated 2026-07-05T22:01Z)</div>
+    </div>
+    <div style="text-align:right">
+      <div class="hero-number">45%</div>
+      <div class="hero-label">Overall Completion</div>
+    </div>
+  </div>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card accent">
+    <div class="stat-value">2</div>
+    <div class="stat-label">Active Changes</div>
+    <div class="stat-breakdown">2 In Progress · 0 Blocked · 0 Not Started</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">25</div>
+    <div class="stat-label">Archived Changes</div>
+    <div class="stat-breakdown">21 Done · 2 Cancelled · 2 Partial</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">27</div>
+    <div class="stat-label">Total Changes</div>
+    <div class="stat-breakdown">Across entire project lifecycle</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">0</div>
+    <div class="stat-label">Stale (14+ days)</div>
+    <div class="stat-breakdown">No active change untouched &gt;14d</div>
+  </div>
+</div>
+
+<div class="chart-container">
+  <h2 style="border:none; padding:0; margin:0 0 0.25rem 0; font-size:0.95rem;">Status Distribution</h2>
+  <div class="chart-bars">
+    <div class="chart-bar done" style="width:62%">62%</div>
+    <div class="chart-bar in-progress" style="width:4%">4%</div>
+    <div class="chart-bar blocked" style="width:1%">1%</div>
+    <div class="chart-bar not-started" style="width:33%">33%</div>
+  </div>
+  <div class="chart-legend">
+    <span class="chart-legend-item"><span class="chart-legend-dot" style="background:#2E7D32"></span>Done (62%) — 657 tasks</span>
+    <span class="chart-legend-item"><span class="chart-legend-dot" style="background:#1565C0"></span>In Progress (4%) — 43 tasks</span>
+    <span class="chart-legend-item"><span class="chart-legend-dot" style="background:#C62828"></span>Blocked (1%) — 12 tasks</span>
+    <span class="chart-legend-item"><span class="chart-legend-dot" style="background:#545761"></span>Not Started / Cancelled (33%) — 347 tasks</span>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Active Changes</h2>
+  <div style="overflow-x:auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Change ID</th>
+        <th>Title</th>
+        <th>Status</th>
+        <th>% Done</th>
+        <th>Last Touched</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td data-label="Change ID"><span class="change-id">v2-deploy-back-vercel</span></td>
+        <td data-label="Title">V2 deploy to Vercel (frontend + backend)</td>
+        <td data-label="Status"><span class="badge in-progress">In Progress</span></td>
+        <td data-label="% Done">
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <div class="progress-bar-bg"><div class="progress-bar-fill blue" style="width:63%"></div></div>
+            <span style="font-size:0.8rem; color:#B0B4BE">25/40</span>
+          </div>
+        </td>
+        <td data-label="Last Touched"><span class="mono">2026-07-02</span></td>
+        <td data-label="Notes" style="font-size:0.8rem; color:#8B8F9A;">All code/config done. Pending Vercel project setup, Azure AD, E2E tests.</td>
+      </tr>
+      <tr>
+        <td data-label="Change ID"><span class="change-id">deploy-frontend-vercel</span></td>
+        <td data-label="Title">Deploy frontend to Vercel</td>
+        <td data-label="Status"><span class="badge in-progress">In Progress</span></td>
+        <td data-label="% Done">
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <div class="progress-bar-bg"><div class="progress-bar-fill blue" style="width:26%"></div></div>
+            <span style="font-size:0.8rem; color:#B0B4BE">9/35</span>
+          </div>
+        </td>
+        <td data-label="Last Touched"><span class="mono">2026-06-30</span></td>
+        <td data-label="Notes" style="font-size:0.8rem; color:#8B8F9A;">Env config + monitoring done. Pending Vercel project, CI/CD, production deploy.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Recently Archived</h2>
+  <div style="overflow-x:auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Change ID</th>
+        <th>Title</th>
+        <th>Archived</th>
+        <th>% At Archive</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td data-label="Change ID"><span class="change-id">2026-07-05-upstash-redis-production-config</span></td>
+        <td data-label="Title">Upstash Redis for Bull queue in production</td>
+        <td data-label="Archived"><span class="mono">2026-07-05</span></td>
+        <td data-label="% At Archive">100% <span style="color:#81C784;font-size:0.8rem;">✓</span></td>
+        <td data-label="Notes" style="font-size:0.8rem; color:#8B8F9A;">All 8 tasks done. Spec synced.</td>
+      </tr>
+      <tr>
+        <td data-label="Change ID"><span class="change-id">2026-07-05-dockerize-app-for-render-deployment</span></td>
+        <td data-label="Title">Dockerize app for Render deployment</td>
+        <td data-label="Archived"><span class="mono">2026-07-05</span></td>
+        <td data-label="% At Archive">72%</td>
+        <td data-label="Notes" style="font-size:0.8rem; color:#8B8F9A;">Render-specific tasks boxed. General Docker infra remains useful. 8 general tasks left pending.</td>
+      </tr>
+      <tr>
+        <td data-label="Change ID"><span class="change-id">2026-07-05-deploy-backend-docker-render</span></td>
+        <td data-label="Title">Deploy backend Docker to Render</td>
+        <td data-label="Archived"><span class="mono">2026-07-05</span></td>
+        <td data-label="% At Archive">0% <span style="color:#F5A623;font-size:0.8rem;">(cancelled)</span></td>
+        <td data-label="Notes" style="font-size:0.8rem; color:#8B8F9A;">All 48 tasks boxed. Superseded by Vercel path.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Spec Alignment Gaps</h2>
+  <p style="color:#8B8F9A; font-size:0.85rem; margin-bottom:0.75rem;">
+    25 delta specs across 12 archived changes have no corresponding main spec. These capabilities were implemented but never documented in <code>openspec/specs/</code>.
+  </p>
+
+  <div class="callout info">
+    <div class="callout-title">2026-06-23-add-auth-and-rbac (4 gaps)</div>
+    <div class="callout-body">
+      <code>user-role-management</code>, <code>contract-visibility-rbac</code>, <code>user-auth</code>, <code>admin-dashboard</code>
+    </div>
+  </div>
+  <div class="callout info">
+    <div class="callout-title">2026-06-23-add-drizzle-orm (2 gaps)</div>
+    <div class="callout-body"><code>drizzle-repositories</code>, <code>db-schema</code></div>
+  </div>
+  <div class="callout info">
+    <div class="callout-title">2026-06-28-survey-email-scheduler (4 gaps)</div>
+    <div class="callout-body"><code>delayed-email</code>, <code>survey-crud</code>, <code>email-templates</code>, <code>survey-submission</code></div>
+  </div>
+  <div class="callout info">
+    <div class="callout-title">8 other changes (15 gaps)</div>
+    <div class="callout-body">
+      <code>import-aliases</code>, <code>volunteering-areas</code>, <code>build-and-test</code>, <code>dashboard-datatable</code>, <code>contract-list-api</code>, <code>prod-db-init</code>, <code>wizard-form-fields</code>, <code>spec</code> (fix-test-errors), <code>production-monitoring</code>, <code>render-hosting</code>, <code>docker-deployment</code>, <code>ci-cd-pipeline</code>, <code>containerized-development</code>, <code>docker-configuration</code>, <code>render-deployment</code>
+    </div>
+  </div>
+  <div class="callout info">
+    <div class="callout-title">Note on Render-related gaps</div>
+    <div class="callout-body">Render-specific capabilities (<code>render-hosting</code>, <code>render-deployment</code>, etc.) were intentionally not synced — those deployment targets are deprecated.</div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Blockers</h2>
+  <div class="callout danger">
+    <div class="callout-title">fix-supabase-pagination (archived)</div>
+    <div class="callout-body">
+      Archived with <code>blocked: true</code> in status manifest. 12/12 tasks done at 100% but marked blocked — likely a Supabase pagination issue that was never fully resolved. Review if the root cause was actually fixed or if it remains latent in production.
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Recommended Next Actions</h2>
+
+  <div class="callout">
+    <div class="callout-title">1. <span class="change-id">v2-deploy-back-vercel</span> — Push over the finish line (63% → 100%)</div>
+    <div class="callout-body">
+      All code/config is done. What remains is execution: create Vercel project, connect repos, configure env vars and service networking, add Azure AD redirect URI, and run E2E tests. This is the single highest-leverage task — it unlocks UAT for Altius.
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">2. <span class="change-id">deploy-frontend-vercel</span> — May be absorbed by v2 change</div>
+    <div class="callout-body">
+      Currently at 26%. Since <span class="change-id">v2-deploy-back-vercel</span> already covers frontend + backend Vercel setup, much of this change's scope may be redundant. Consider consolidating or boxing overlapping tasks.
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">3. Spec alignment — Syncing backlog</div>
+    <div class="callout-body">
+      25 unsynced delta specs across 12 archived changes. Low urgency but useful for documentation completeness. Prioritize the most critical capabilities: <code>survey-crud</code>, <code>survey-submission</code>, <code>delayed-email</code>, <code>user-auth</code>, and <code>import-aliases</code>.
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Data Quality Notes</h2>
+  <ul class="dq-note">
+    <li><strong>No git history at root:</strong> The openspec root (<code>/home/student/Documentos/dev/voluntarios</code>) is not a git repo. "Last touched" dates come from filesystem mtime of proposal/task files, not git commits. Sibling repos (<code>voluntarios-back/</code>, <code>voluntarios-front/</code>) are git repos but no code-level activity was matched to any change slug.</li>
+    <li><strong>Manifest was regenerated:</strong> The status manifest was stale (generated at 16:52Z before archiving 3 changes and renaming 1). Ran <code>generate-status.js</code> at 22:01Z to refresh it — this is the expected workflow when working actively.</li>
+    <li><strong>Boxed tasks:</strong> 48 tasks in <code>deploy-backend-docker-render</code> and 6 in <code>dockerize-app-for-render-deployment</code> are marked <code>[-]</code> (cancelled). They are counted as neither done nor pending.</li>
+    <li><strong>0-task archives:</strong> Two archived changes (<code>add-users-table-supabase-auth</code>, <code>supabase-microsoft-auth</code>) show 0% with 0 tasks — no tasks.md was ever created for them, likely abandoned or experimental changes.</li>
+  </ul>
+</div>
+
+</body>
+</html>

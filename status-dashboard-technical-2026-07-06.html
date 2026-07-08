@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voluntarios Project Status - Technical Dashboard</title>
+    <style>
+        :root {
+            --bg-primary: #12141A;
+            --bg-secondary: #1A1D24;
+            --bg-card: #242832;
+            --text-primary: #E8E6E3;
+            --text-secondary: #A8A29E;
+            --accent: #6466F1;
+            --done: #10B981;
+            --in-progress: #F59E0B;
+            --blocked: #EF4444;
+            --not-started: #64748B;
+            --border: #374151;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .hero-stat {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-align: right;
+            min-width: 200px;
+        }
+
+        .metadata {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-warning {
+            color: var(--blocked);
+        }
+
+        .chart-container {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .status-chart {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .chart-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .chart-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .bar-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .bar-label {
+            min-width: 120px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .bar-wrapper {
+            width: 100%;
+            background-color: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 24px;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .bar-value {
+            min-width: 40px;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+
+        .changes-table {
+            width: 100%;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .table-header {
+            background-color: var(--bg-secondary);
+            font-weight: 600;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .table-row {
+            border-bottom: 1px solid var(--border);
+            transition: background-color 0.2s ease;
+        }
+
+        .table-row:hover {
+            background-color: rgba(100, 102, 241, 0.1);
+        }
+
+        .table-cell {
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-done {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: var(--done);
+        }
+
+        .badge-in-progress {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: var(--in-progress);
+        }
+
+        .badge-blocked {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: var(--blocked);
+        }
+
+        .badge-not-started {
+            background-color: rgba(100, 116, 139, 0.2);
+            color: var(--not-started);
+        }
+
+        .progress-container {
+            width: 150px;
+            height: 8px;
+            background-color: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .monospace {
+            font-family: ui-monospace, "SF Mono", Menlo, monospace;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .callout {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .callout-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .callout-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .callout-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background-color: rgba(100, 116, 139, 0.1);
+            border-radius: 4px;
+        }
+
+        .callout-item::before {
+            content: "•";
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .hero-stat {
+                text-align: left;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-cell {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .progress-container {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero-stat {
+                font-size: 2.5rem;
+            }
+
+            .stat-value {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div>
+                    <h1>Voluntarios Project Status</h1>
+                    <div class="metadata">
+                        <span>Generated: 2026-07-06</span>
+                        <span>•</span>
+                        <span>Data source: openspec/status.json (27 archived changes, 1 active change)</span>
+                    </div>
+                </div>
+                <div class="hero-stat">96%</div>
+            </div>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Active Changes</div>
+                <div class="stat-value">1</div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                    <span style="color: var(--in-progress);">●</span> 1 In Progress<br>
+                    <span style="color: var(--blocked);">●</span> 0 Blocked<br>
+                    <span style="color: var(--not-started);">●</span> 0 Not Started
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Archived Changes</div>
+                <div class="stat-value">27</div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                    25 Complete (100%)<br>
+                    2 Partial (< 100%)
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Overall Completion</div>
+                <div class="stat-value">96%</div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                    100% archived rate<br>
+                    96% task completion
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Stale Changes</div>
+                <div class="stat-value stat-warning">0</div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                    No inactive changes<br>
+                    (14+ days no activity)
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">Status Distribution</div>
+            <div class="status-chart">
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--done);"></div>
+                        <span>Done: 27 changes (100%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--in-progress);"></div>
+                        <span>In Progress: 1 change (4%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--blocked);"></div>
+                        <span>Blocked: 0 changes (0%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--not-started);"></div>
+                        <span>Not Started: 0 changes (0%)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-bars">
+                <div class="bar-container">
+                    <div class="bar-label">Done</div>
+                    <div class="bar-wrapper">
+                        <div class="bar-fill" style="background-color: var(--done); width: 96%;"></div>
+                    </div>
+                    <div class="bar-value">27</div>
+                </div>
+                <div class="bar-container">
+                    <div class="bar-label">In Progress</div>
+                    <div class="bar-wrapper">
+                        <div class="bar-fill" style="background-color: var(--in-progress); width: 4%;"></div>
+                    </div>
+                    <div class="bar-value">1</div>
+                </div>
+                <div class="bar-container">
+                    <div class="bar-label">Blocked</div>
+                    <div class="bar-wrapper">
+                        <div class="bar-fill" style="background-color: var(--blocked); width: 0%;"></div>
+                    </div>
+                    <div class="bar-value">0</div>
+                </div>
+                <div class="bar-container">
+                    <div class="bar-label">Not Started</div>
+                    <div class="bar-wrapper">
+                        <div class="bar-fill" style="background-color: var(--not-started); width: 0%;"></div>
+                    </div>
+                    <div class="bar-value">0</div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Active Changes</h2>
+        <div class="changes-table">
+            <div class="table-header">
+                <div style="display: grid; grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr; gap: 1rem;">
+                    <div>Change ID</div>
+                    <div>Title</div>
+                    <div>Status</div>
+                    <div>% Done</div>
+                    <div>Last Touched</div>
+                    <div>Notes</div>
+                </div>
+            </div>
+            <div class="table-row">
+                <div style="display: grid; grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr; gap: 1rem;">
+                    <div class="table-cell monospace">rebase-admin-and-deploy</div>
+                    <div class="table-cell">Rebase admin features and deploy to Vercel</div>
+                    <div class="table-cell">
+                        <span class="status-badge badge-in-progress">In Progress</span>
+                    </div>
+                    <div class="table-cell">
+                        <div class="progress-container">
+                            <div class="progress-bar" style="background-color: var(--in-progress); width: 0%;"></div>
+                        </div>
+                        <div style="font-size: 0.9rem; margin-top: 0.25rem;">0/24 tasks (0%)</div>
+                    </div>
+                    <div class="table-cell">2026-07-06</div>
+                    <div class="table-cell">New change - rebase admin area and deploy</div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Recently Archived Changes</h2>
+        <div class="callout">
+            <div class="callout-title">Last 5 Completed Changes</div>
+            <ul class="callout-list">
+                <li class="callout-item">
+                    <span class="monospace">2026-07-06-v2-deploy-back-vercel</span> - Backend Vercel deployment v2 (100%, archived 2026-07-06)
+                </li>
+                <li class="callout-item">
+                    <span class="monospace">2026-07-06-deploy-frontend-vercel</span> - Frontend Vercel deployment (100%, archived 2026-07-06)
+                </li>
+                <li class="callout-item">
+                    <span class="monospace">2026-07-05-upstash-redis-production-config</span> - Upstash Redis config (100%, archived 2026-07-05)
+                </li>
+                <li class="callout-item">
+                    <span class="monospace">2026-07-05-dockerize-app-for-render-deployment</span> - Dockerization (72%, archived 2026-07-05)
+                </li>
+                <li class="callout-item">
+                    <span class="monospace">2026-07-05-deploy-backend-docker-render</span> - Backend Docker deployment (0%, archived 2026-07-05)
+                </li>
+            </ul>
+        </div>
+
+        <h2 class="section-title">Spec Alignment Gaps</h2>
+        <div class="callout">
+            <div class="callout-title">No Spec Alignment Issues Found</div>
+            <p style="color: var(--text-secondary);">All archived changes appear to be properly reflected in openspec/specs/.</p>
+        </div>
+
+        <h2 class="section-title">Blockers</h2>
+        <div class="callout">
+            <div class="callout-title">No Active Blockers</div>
+            <p style="color: var(--text-secondary);">No changes are currently blocked. All active work can proceed.</p>
+        </div>
+
+        <h2 class="section-title">Recommended Next Actions</h2>
+        <div class="callout">
+            <div class="callout-title">Priority Tasks</div>
+            <ul class="callout-list">
+                <li class="callout-item">
+                    <span class="monospace">rebase-admin-and-deploy</span> - Start rebase preparation (tasks 1.1-1.4)
+                </li>
+                <li class="callout-item">
+                    Verify admin authentication setup works with existing role-based access control
+                </li>
+                <li class="callout-item">
+                    Run predeploy checks before final deployment to Vercel
+                </li>
+            </ul>
+        </div>
+
+        <h2 class="section-title">Data Quality Notes</h2>
+        <div class="callout">
+            <div class="callout-title">Data Source Information</div>
+            <ul class="callout-list">
+                <li class="callout-item">Status data sourced from openspec/status.json (generated 2026-07-06)</li>
+                <li class="callout-item">No git history available (root has no .git directory)</li>
+                <li class="callout-item">Dates derived from filesystem mtimes</li>
+                <li class="callout-item">All 27 archived changes and 1 active change accounted for</li>
+                <li class="callout-item">No stale data detected (manifest is current)</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

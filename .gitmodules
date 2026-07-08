@@ -1,0 +1,6 @@
+[submodule "voluntarios-back"]
+	path = voluntarios-back
+	url = ./voluntarios-back
+[submodule "voluntarios-front"]
+	path = voluntarios-front
+	url = ./voluntarios-front

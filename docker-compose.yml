@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  # Backend service
+  backend:
+    build:
+      context: ./voluntarios-back
+      dockerfile: Dockerfile
+    container_name: voluntarios-backend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=voluntarios
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./voluntarios-back:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/build
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - voluntarios-network
+
+  # Frontend service
+  frontend:
+    build:
+      context: ./voluntarios-front
+      dockerfile: Dockerfile
+    container_name: voluntarios-frontend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://backend:3001
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./voluntarios-front:/app
+      - /app/node_modules
+      - /app/.next
+      - /app/public
+    depends_on:
+      - backend
+    networks:
+      - voluntarios-network
+
+  # Postgres database
+  postgres:
+    image: postgres:16-alpine
+    container_name: voluntarios-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=voluntarios
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - voluntarios-network
+
+  # Redis for Bull queue
+  redis:
+    image: redis:7-alpine
+    container_name: voluntarios-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - voluntarios-network
+
+# Networks
+networks:
+  voluntarios-network:
+    driver: bridge
+
+# Volumes
+volumes:
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local

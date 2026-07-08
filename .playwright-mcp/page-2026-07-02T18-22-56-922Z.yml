@@ -1,0 +1,153 @@
+- main [ref=e2]:
+  - main [ref=e3]:
+    - img "logo" [ref=e4]
+    - generic [ref=e5]:
+      - heading "Acuerdo de voluntariado con la Fundación Altius" [level=2] [ref=e6]
+      - generic [ref=e7]:
+        - paragraph [ref=e8]: "* indica campo obligatorio"
+        - generic [ref=e9]:
+          - generic [ref=e10]:
+            - generic [ref=e11]:
+              - text: NOMBRE Y APELLIDOS DEL VOLUNTARIO/A
+              - generic [ref=e12]: "*"
+            - textbox "NOMBRE Y APELLIDOS DEL VOLUNTARIO/A *" [ref=e13]
+          - generic [ref=e14]:
+            - generic [ref=e15]:
+              - text: DNI / NIE
+              - generic [ref=e16]: "*"
+            - textbox "DNI / NIE *" [ref=e17]
+          - generic [ref=e18]:
+            - generic [ref=e19]:
+              - text: DOMICILIO
+              - generic [ref=e20]: "*"
+            - textbox "DOMICILIO *" [ref=e21]
+          - generic [ref=e22]:
+            - generic [ref=e23]: EMPRESA / ORGANIZACIÓN
+            - textbox "EMPRESA / ORGANIZACIÓN" [ref=e24]
+          - generic [ref=e25]:
+            - paragraph [ref=e26]: Mayor de edad *
+            - generic [ref=e27]:
+              - checkbox "SI" [checked] [ref=e28]:
+                - generic:
+                  - img
+              - checkbox [checked]
+              - generic [ref=e29]: SI
+              - checkbox "NO" [ref=e30]
+              - checkbox
+              - generic [ref=e31]: "NO"
+          - generic [ref=e32]:
+            - generic [ref=e33]:
+              - text: TELÉFONO
+              - generic [ref=e34]: "*"
+            - textbox "TELÉFONO *" [ref=e35]
+          - generic [ref=e36]:
+            - generic [ref=e37]:
+              - text: EMAIL
+              - generic [ref=e38]: "*"
+            - textbox "EMAIL *" [ref=e39]
+          - generic [ref=e40]:
+            - paragraph [ref=e41]: LA ACTIVIDAD DE VOLUNTARIADO SE ENMARCA EN UNA DE LAS SIGUIENTES ÁREAS *
+            - generic [ref=e42]:
+              - generic [ref=e43]:
+                - checkbox "Reparto de Alimentos" [ref=e44]
+                - checkbox
+                - generic [ref=e45]: Reparto de Alimentos
+              - generic [ref=e46]:
+                - checkbox "Acompañamiento en la búsqueda de empleo" [ref=e47]
+                - checkbox
+                - generic [ref=e48]: Acompañamiento en la búsqueda de empleo
+              - generic [ref=e49]:
+                - checkbox "Coaching" [ref=e50]
+                - checkbox
+                - generic [ref=e51]: Coaching
+              - generic [ref=e52]:
+                - checkbox "Formación" [ref=e53]
+                - checkbox
+                - generic [ref=e54]: Formación
+              - generic [ref=e55]:
+                - checkbox "CEPI" [ref=e56]
+                - checkbox
+                - generic [ref=e57]: CEPI
+              - generic [ref=e58]:
+                - checkbox "Nave" [ref=e59]
+                - checkbox
+                - generic [ref=e60]: Nave
+              - generic [ref=e61]:
+                - checkbox "Otra" [ref=e62]
+                - checkbox
+                - generic [ref=e63]: Otra
+          - generic [ref=e64]:
+            - paragraph [ref=e65]:
+              - text: DURACIÓN
+              - text: El presente acuerdo tiene una duración de (indicar lo que proceda). Cualquiera de las partes puede dejar sin efecto este acuerdo notificándolo con una antelación de 15 días naturales.*
+            - radiogroup [ref=e66]:
+              - generic [ref=e67]:
+                - radio "días" [ref=e68]
+                - radio
+                - generic [ref=e69]: días
+              - generic [ref=e70]:
+                - radio "semanas" [ref=e71]
+                - radio
+                - generic [ref=e72]: semanas
+              - generic [ref=e73]:
+                - radio "meses" [ref=e74]
+                - radio
+                - generic [ref=e75]: meses
+              - generic [ref=e76]:
+                - radio "años" [checked] [ref=e77]:
+                  - img [ref=e78]
+                - radio [checked]
+                - generic [ref=e80]: años
+              - generic [ref=e81]:
+                - radio "indeterminado" [ref=e82]
+                - radio
+                - generic [ref=e83]: indeterminado
+              - generic [ref=e84]:
+                - radio "otros" [ref=e85]
+                - radio
+                - generic [ref=e86]: otros
+          - generic [ref=e87]:
+            - paragraph [ref=e88]: MODALIDAD *
+            - radiogroup [ref=e89]:
+              - generic [ref=e90]:
+                - radio "Presencial" [ref=e91]
+                - radio
+                - generic [ref=e92]: Presencial
+              - generic [ref=e93]:
+                - radio "Online" [ref=e94]
+                - radio
+                - generic [ref=e95]: Online
+              - generic [ref=e96]:
+                - radio "Híbrido" [ref=e97]
+                - radio
+                - generic [ref=e98]: Híbrido
+          - generic [ref=e99]:
+            - generic [ref=e100]:
+              - text: LUGAR DE LA ACTIVIDAD DE VOLUNTARIADO
+              - generic [ref=e101]: "*"
+            - combobox "LUGAR DE LA ACTIVIDAD DE VOLUNTARIADO *" [ref=e102]:
+              - generic: Seleccione una ciudad
+              - img
+            - combobox [ref=e103]
+          - generic [ref=e104]:
+            - paragraph [ref=e105]:
+              - text: HORARIO
+              - text: Las actividades se llevarán a cabo en el siguiente horario:*
+            - generic [ref=e106]:
+              - generic [ref=e107]:
+                - checkbox "Días laborables mañana" [ref=e108]
+                - checkbox
+                - generic [ref=e109]: Días laborables mañana
+              - generic [ref=e110]:
+                - checkbox "Días laborables tarde" [ref=e111]
+                - checkbox
+                - generic [ref=e112]: Días laborables tarde
+              - generic [ref=e113]:
+                - checkbox "Fines de semana" [ref=e114]
+                - checkbox
+                - generic [ref=e115]: Fines de semana
+              - generic [ref=e116]:
+                - checkbox "Indistintamente" [ref=e117]
+                - checkbox
+                - generic [ref=e118]: Indistintamente
+          - button "Siguiente >" [ref=e120] [cursor=pointer]
