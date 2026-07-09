@@ -56,7 +56,7 @@ function findSiblingGitRepos(root) {
 function gitDatesForPath(repoDir, relPath) {
   try {
     const out = execSync(
-      `git log --follow --format=%ad --date=short -- "${relPath}"`,
+      `git log --follow --format=%aI -- "${relPath}"`,
       { cwd: repoDir, stdio: ["ignore", "pipe", "ignore"] }
     )
       .toString()
@@ -76,7 +76,7 @@ function findCodeActivityForSlug(slug, repoDirs) {
   for (const repoDir of repoDirs) {
     try {
       const log = execSync(
-        `git log --all --format=%ad|%s --date=short --grep="${slug}" -i`,
+        `git log --all --format=%aI|%s --grep="${slug}" -i`,
         { cwd: repoDir, stdio: ["ignore", "pipe", "ignore"] }
       )
         .toString()

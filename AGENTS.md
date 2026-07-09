@@ -55,7 +55,8 @@ Monorepo with two packages: `voluntarios-back/` (Express + TypeScript) and `volu
 | `pnpm test` | Vitest (globals:true, node env) |
 | `pnpm run typecheck` | `tsc --noEmit` |
 | `pnpm run build` | Vite build → `build/` |
-| `pnpm run lint` | ESLint |
+| `pnpm run lint` | Biome check (lint + format) |
+| `pnpm run format` | Biome format only |
 | `pnpm run db:pg:generate` | Drizzle Kit generate (PG schema → SQL migration) |
 | `pnpm run db:pg:push` | Drizzle Kit push (apply schema to local/staging Postgres) |
 | `pnpm run db:pg:push:test` | Drizzle Kit push to test Supabase (uses `.env.test`) |
@@ -137,9 +138,9 @@ cd voluntarios-front && pnpm run test:e2e:email-flow:prod
 ## General
 
 - **Task management:** `openspec` CLI — `openspec status`, `openspec instructions apply`
-- **Lint:** ESLint (flat config `eslint.config.mjs`), `@typescript-eslint/no-explicit-any: off`, `no-unused-vars: off`
+- **Lint:** Biome (`biome.json`), `noExplicitAny: off`, `noUnusedVariables: off`
 - **Commits:** Conventional commits enforced by commitlint (`@commitlint/config-conventional`)
-- **Format:** Prettier via ESLint plugin (eslintrc.json: `plugin:prettier/recommended`)
+- **Format:** Biome (via `biome format` or `biome check`)
 - **No CI/CD workflows** in this repo
 - **No pre-commit hooks** detected
 
