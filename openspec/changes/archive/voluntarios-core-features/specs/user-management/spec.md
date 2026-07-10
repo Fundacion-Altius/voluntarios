@@ -1,8 +1,4 @@
-## Purpose
-
-This specification defines the requirements for user role management, including role definitions, role assignment, and role-based access control.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Role Definition
 
@@ -36,18 +32,7 @@ The system SHALL store each user with a `role` field of type `'admin' | 'nave' |
 - **THEN** the system SHALL find their existing user record
 - **THEN** the system SHALL NOT change their existing role or status
 
-### Requirement: Role-Based Access Control
-
-The system SHALL implement role-based access control.
-
-#### Scenario: Admin Access
-- **WHEN** user with admin role accesses admin-only feature
-- **THEN** access is granted
-
-#### Scenario: Non-Admin Access Denied
-- **WHEN** user without admin role accesses admin-only feature
-- **THEN** access is denied
-- **AND** appropriate error message is displayed
+## ADDED Requirements
 
 ### Requirement: Status changes are audited
 

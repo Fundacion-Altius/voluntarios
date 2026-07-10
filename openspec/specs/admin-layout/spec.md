@@ -66,3 +66,11 @@ The admin layout SHALL render a top bar with branding, theme toggle, user info, 
 - **THEN** the top bar SHALL display the user's name, email, and a logout button
 - **AND** a theme toggle SHALL be visible
 - **AND** on mobile a hamburger icon SHALL be visible
+
+### Requirement: Non-admin roles use a simpler layout
+The system SHALL render a top-bar-only layout (without sidebar) for non-admin roles accessing admin routes.
+
+#### Scenario: Non-admin user sees top-bar-only layout
+- **WHEN** a user with role "nave" or "general" navigates to `/contratos`
+- **THEN** the page SHALL render with only the top bar (no sidebar, no drawer navigation)
+- **AND** the contracts table SHALL still be accessible with role-based filtering
