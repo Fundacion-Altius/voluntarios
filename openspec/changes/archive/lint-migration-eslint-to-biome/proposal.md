@@ -32,3 +32,5 @@ The backend currently depends on 14+ ESLint and Prettier packages with two confi
 - CI pipeline: `pnpm run lint` now runs Biome instead of ESLint
 - Developer workflow: `pnpm run lint` and new `pnpm run format` commands
 - Source code: auto-fixable lint issues resolved; manual fixes for remaining diagnostics
+
+Archived: 2026-07-10

@@ -31,3 +31,5 @@ The platform needs to evolve from an admin-only contract/survey tool into a full
 - **Frontend**: new public page `/hazte-voluntario`; new admin sections (Candidatos, Actividades, Ranking); new volunteer portal section (profile, bookings, achievements); existing dashboard may show new KPIs
 - **Infrastructure**: no new services — standard Express + Postgres (or in-memory for dev); QR codes can be generated server-side with no external dependency
 - **Dependencies**: email templates for candidacy notifications; QR code generation library (e.g., `qrcode` npm package)
+
+Archived: 2026-07-10
