@@ -1,9 +1,9 @@
 {
-  "generated": "2026-07-09T07:24:59.706Z",
+  "generated": "2026-07-10T15:35:03.606Z",
   "root_is_git": true,
   "sibling_repos_scanned": [],
   "active_count": 0,
-  "archived_count": 32,
+  "archived_count": 34,
   "changes": {
     "2025-07-07-frontend-test-coverage": {
       "slug": "2025-07-07-frontend-test-coverage",
@@ -377,7 +377,7 @@
       "tasks_done": 17,
       "pct_done": 100,
       "archived_date": "2026-07-08",
-      "openspec_last_modified": null,
+      "openspec_last_modified": "2026-07-09",
       "openspec_date_source": "git (root)",
       "code_last_touched": null,
       "code_activity_matched_in": []
@@ -390,7 +390,7 @@
       "tasks_done": 38,
       "pct_done": 100,
       "archived_date": "2026-07-08",
-      "openspec_last_modified": null,
+      "openspec_last_modified": "2026-07-09",
       "openspec_date_source": "git (root)",
       "code_last_touched": null,
       "code_activity_matched_in": []
@@ -403,7 +403,7 @@
       "tasks_done": 25,
       "pct_done": 100,
       "archived_date": "2026-07-08",
-      "openspec_last_modified": null,
+      "openspec_last_modified": "2026-07-09",
       "openspec_date_source": "git (root)",
       "code_last_touched": null,
       "code_activity_matched_in": []
@@ -416,7 +416,33 @@
       "tasks_done": 32,
       "pct_done": 100,
       "archived_date": "2026-07-08",
-      "openspec_last_modified": null,
+      "openspec_last_modified": "2026-07-09",
+      "openspec_date_source": "git (root)",
+      "code_last_touched": null,
+      "code_activity_matched_in": []
+    },
+    "lint-migration-eslint-to-biome": {
+      "slug": "lint-migration-eslint-to-biome",
+      "status": "archived",
+      "blocked": false,
+      "tasks_total": 24,
+      "tasks_done": 24,
+      "pct_done": 100,
+      "archived_date": "2026-07-10",
+      "openspec_last_modified": "2026-07-10",
+      "openspec_date_source": "git (root)",
+      "code_last_touched": null,
+      "code_activity_matched_in": []
+    },
+    "voluntarios-core-features": {
+      "slug": "voluntarios-core-features",
+      "status": "archived",
+      "blocked": false,
+      "tasks_total": 94,
+      "tasks_done": 94,
+      "pct_done": 100,
+      "archived_date": "2026-07-10",
+      "openspec_last_modified": "2026-07-10",
       "openspec_date_source": "git (root)",
       "code_last_touched": null,
       "code_activity_matched_in": []
