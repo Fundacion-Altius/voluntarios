@@ -40,8 +40,8 @@
 ## 6. Testing (Fearless Competence)
 
 - [x] 6.1 Unit: in-memory `DomainEventBus` publish→subscribe; translator creates correct `Notification` rows; dedup by `event.id`
-- [ ] 6.2 E2E: emit `message.sent` (via community `SendMessage`) → `Notification` row appears in real PG; web push attempted (mocked) — requires live Redis + PG
-- [ ] 6.3 Integration: stop consumer, emit events, restart → events replayed and processed exactly once — requires live Redis
+- [x] 6.2 E2E: emit `message.sent` (via community `SendMessage`) → `Notification` row appears in real PG; web push attempted (mocked) — requires live Redis + PG
+- [x] 6.3 Integration: stop consumer, emit events, restart → events replayed and processed exactly once — requires live Redis
 - [x] 6.4 `pnpm run typecheck` ✅ and `pnpm run lint` ✅
 
 ## 7. Integration & Relationship
