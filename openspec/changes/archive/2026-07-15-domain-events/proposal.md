@@ -41,3 +41,5 @@ This change defines the **inter-module domain-event contract**: a standard event
 2. **Ownership:** new `src/events/` shared kernel (recommended) vs extend `add-notification-system`.
 3. **Initial event scope:** community's 3 events now (`message.sent`, `project.created`, `project.member.added`); catalog extensible for blog/LMS/onboarding/gamification later.
 4. **Idempotency:** consumers dedupe by event `id` (recommended).
+
+Archived: 2026-07-15
