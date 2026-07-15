@@ -1,6 +1,6 @@
 [submodule "voluntarios-back"]
 	path = voluntarios-back
-	url = ./voluntarios-back
+	url = git@github.com:Fundacion-Altius/voluntarios-back.git
 [submodule "voluntarios-front"]
 	path = voluntarios-front
-	url = ./voluntarios-front
+	url = git@github.com:Fundacion-Altius/voluntarios-front.git
