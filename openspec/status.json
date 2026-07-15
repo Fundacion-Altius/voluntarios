@@ -1,10 +1,36 @@
 {
-  "generated": "2026-07-10T15:35:03.606Z",
+  "generated": "2026-07-15T08:17:51.022Z",
   "root_is_git": true,
   "sibling_repos_scanned": [],
-  "active_count": 0,
-  "archived_count": 34,
+  "active_count": 2,
+  "archived_count": 35,
   "changes": {
+    "add-notification-system": {
+      "slug": "add-notification-system",
+      "status": "in_progress",
+      "blocked": false,
+      "tasks_total": 48,
+      "tasks_done": 47,
+      "pct_done": 98,
+      "archived_date": null,
+      "openspec_last_modified": "2026-07-12",
+      "openspec_date_source": "git (root)",
+      "code_last_touched": null,
+      "code_activity_matched_in": []
+    },
+    "lms-courses": {
+      "slug": "lms-courses",
+      "status": "not_started",
+      "blocked": false,
+      "tasks_total": 59,
+      "tasks_done": 0,
+      "pct_done": 0,
+      "archived_date": null,
+      "openspec_last_modified": "2026-07-12",
+      "openspec_date_source": "git (root)",
+      "code_last_touched": null,
+      "code_activity_matched_in": []
+    },
     "2025-07-07-frontend-test-coverage": {
       "slug": "2025-07-07-frontend-test-coverage",
       "status": "archived",
@@ -417,6 +443,19 @@
       "pct_done": 100,
       "archived_date": "2026-07-08",
       "openspec_last_modified": "2026-07-09",
+      "openspec_date_source": "git (root)",
+      "code_last_touched": null,
+      "code_activity_matched_in": []
+    },
+    "2026-07-12-blog-and-onboarding": {
+      "slug": "2026-07-12-blog-and-onboarding",
+      "status": "archived",
+      "blocked": false,
+      "tasks_total": 69,
+      "tasks_done": 69,
+      "pct_done": 100,
+      "archived_date": "2026-07-12",
+      "openspec_last_modified": "2026-07-12",
       "openspec_date_source": "git (root)",
       "code_last_touched": null,
       "code_activity_matched_in": []
